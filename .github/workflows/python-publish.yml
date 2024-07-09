@@ -32,6 +32,6 @@ jobs:
         scp -r . $EC2_USER@$EC2_HOST:/home/$EC2_USER/app
         ssh $EC2_USER@$EC2_HOST << 'EOF'
           cd /home/$EC2_USER/app
-          # source env/bin/activate
+          # source venv/bin/activate
           # pip install -r requirements.txt
           # uvicorn main:app --reload --host 0.0.0.0 --port 8000
