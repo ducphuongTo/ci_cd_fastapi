@@ -24,37 +24,35 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: olayinkaadebisi/fastapiwithnginx
-      # - name: Build and push Docker image
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: .
-      #     file: ./Dockerfile
-      #     push: true
-      #     tags: olayinkaadebisi/fastapiwithnginx:latest
-      #     labels: ${{ steps.meta.outputs.labels }}
-  deploy:
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
-    needs: [ build_and_push ]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: copy file via ssh key
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yml, nginx/nginx.conf"
-          target: .
-      - name: run docker-compose
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker compose down
-            docker rmi -f $(docker images -q)
-            docker compose pull
-            docker compose up -d
+      - name: Build and push Docker image
+      run: |
+        docker buildx create --use
+        docker buildx build \
+          --file dockerfile \
+          --push .
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.ref == 'refs/heads/main' }}
+  #   needs: [ build_and_push ]
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #     - name: copy file via ssh key
+  #       uses: appleboy/scp-action@v0.1.4
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ${{ secrets.EC2_USER }}
+  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         source: "docker-compose.yml, nginx/nginx.conf"
+  #         target: .
+  #     - name: run docker-compose
+  #       uses: appleboy/ssh-action@v1.0.0
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ${{ secrets.EC2_USER }}
+  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         script: |
+  #           docker compose down
+  #           docker rmi -f $(docker images -q)
+  #           docker compose pull
+  #           docker compose up -d
