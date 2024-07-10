@@ -39,14 +39,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: copy file via ssh key
-        uses: appleboy/scp-action@v0.1.4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yml, nginx/nginx.conf"
-          target: "/home/${{ secrets.EC2_USER }}/app"
+          ecr: auto
+          logout: true
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
       - name: Set permissions for private key
         run: |
@@ -54,11 +53,11 @@ jobs:
           chmod 600 staging.pem
       # - name: Pull Docker image
       #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker pull your-dockerhub-username/cddemo:latest'
+      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker pull phuongto07092000/cddemo:latest'
       # - name: Stop running container
       #   run: |
       #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker stop cddemo || true'
       #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker rm cddemo || true'
       # - name: Run new container
       #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker run -d --name cddemo -p 80:3000 your-dockerhub-username/cddemo:latest'
+      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker run -d --name cddemo -p 80:3000 phuongto07092000/cddemo:latest'
