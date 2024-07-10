@@ -49,7 +49,7 @@ jobs:
 
       - name: Set permissions for private key
         run: |
-          echo "${{ secrets.AWS_PRIVATE_KEY }}" > staging.pem
+          echo "${{ env.AWS_PRIVATE_KEY }}" > staging.pem
           chmod 600 staging.pem
       - name: Pull Docker image
         run: |
