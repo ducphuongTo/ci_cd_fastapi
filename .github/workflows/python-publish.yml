@@ -49,11 +49,11 @@ jobs:
 
       - name: Set permissions for private key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > staging.pem
-          chmod 600 staging.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/private.key
+          chmod 600 ~/.ssh/private.key
       - name: Pull Docker image
         run: |
-          ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
+          ssh -i ~/.ssh/private.key ubuntu@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
       # - name: Stop running container
       #   run: |
       #     ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@your-ec2-instance-ip 'sudo docker stop fastapi || true'
