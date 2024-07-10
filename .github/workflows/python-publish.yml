@@ -48,14 +48,17 @@ jobs:
           source: "docker-compose.yml, nginx/nginx.conf"
           target: "/home/${{ secrets.EC2_USER }}/app"
 
-      - name: run docker-compose
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker compose down
-            docker rmi -f $(docker images -q)
-            docker compose pull
-            docker compose up -d
+      - name: Set permissions for private key
+        run: |
+          echo "${{ secrets.AWS_PRIVATE_KEY }}" > staging.pem
+          chmod 600 staging.pem
+      # - name: Pull Docker image
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker pull your-dockerhub-username/cddemo:latest'
+      # - name: Stop running container
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker stop cddemo || true'
+      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker rm cddemo || true'
+      # - name: Run new container
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker run -d --name cddemo -p 80:3000 your-dockerhub-username/cddemo:latest'
