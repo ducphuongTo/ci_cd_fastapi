@@ -54,7 +54,7 @@ jobs:
           chmod 600 ~/.ssh/private.key
       - name: Pull Docker image
         run: |
-          ssh -i ~/.ssh/private.key ubuntu@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/private.key ubuntu@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
       # - name: Stop running container
       #   run: |
       #     ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@your-ec2-instance-ip 'sudo docker stop fastapi || true'
