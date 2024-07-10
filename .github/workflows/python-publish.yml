@@ -23,13 +23,14 @@ jobs:
           logout: true
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+
       - name: Build and push Docker image
-        run: |
-          docker buildx create --use
-          docker buildx build \
-            --file /home/phuongtd/project/dockerfile \
-            --tag phuongto07092000/fastapi:latest \
-            --push .
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          push: true
+          dockerfile: ./Dockerfile
+          tags: phuongto07092000/fastapi:latest
   # deploy:
   #   runs-on: ubuntu-latest
   #   if: ${{ github.ref == 'refs/heads/main' }}
