@@ -59,8 +59,8 @@ jobs:
           ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
       - name: Stop running container
         run: |
-          ssh -i ~/.ssh/private.key ${{ }}@${{ secrets.EC2_HOST }} 'sudo docker stop fastapi || true'
-          ssh -i ~/.ssh/private.key ${{ }}@${{ secrets.EC2_HOST }} 'sudo docker rm fastapi || true'
+          ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo docker stop fastapi || true'
+          ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo docker rm fastapi || true'
       - name: Run new container
         run: |
-          ssh -i ~/.ssh/private.key ${{ }}@${{ secrets.EC2_HOST }} 'sudo docker run -d --name fastapi -p 80:3000 phuongto07092000/fastapi:latest'
+          ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo docker run -d --name fastapi -p 80:3000 phuongto07092000/fastapi:latest'
