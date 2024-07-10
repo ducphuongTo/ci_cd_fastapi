@@ -53,11 +53,11 @@ jobs:
           chmod 600 staging.pem
       - name: Pull Docker image
         run: |
-          ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
+          ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@${{ secrets.EC2_HOST }}
       # - name: Stop running container
       #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker stop cddemo || true'
-      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker rm cddemo || true'
+      #     ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@your-ec2-instance-ip 'sudo docker stop fastapi || true'
+      #     ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@your-ec2-instance-ip 'sudo docker rm fastapi || true'
       # - name: Run new container
       #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker run -d --name cddemo -p 80:3000 phuongto07092000/cddemo:latest'
+      #     ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@your-ec2-instance-ip 'sudo docker run -d --name fastapi -p 80:3000 phuongto07092000/fastapi:latest'
