@@ -51,9 +51,9 @@ jobs:
         run: |
           echo "${{ secrets.AWS_PRIVATE_KEY }}" > staging.pem
           chmod 600 staging.pem
-      # - name: Pull Docker image
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker pull phuongto07092000/cddemo:latest'
+      - name: Pull Docker image
+        run: |
+          ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
       # - name: Stop running container
       #   run: |
       #     ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker stop cddemo || true'
