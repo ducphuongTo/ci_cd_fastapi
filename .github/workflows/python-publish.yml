@@ -52,7 +52,8 @@ jobs:
           mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/private.key
           chmod 600 ~/.ssh/private.key
-          ssh-keyscan ${{ secrets.SSH_PRIVATE_KEY }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
       - name: Pull Docker image
         run: |
           ssh -i ~/.ssh/private.key ubuntu@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
