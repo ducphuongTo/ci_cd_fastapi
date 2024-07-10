@@ -31,29 +31,29 @@ jobs:
           push: true
           dockerfile: ./Dockerfile
           tags: phuongto07092000/fastapi:latest
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   needs: [ build_and_push ]
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #     - name: copy file via ssh key
-  #       uses: appleboy/scp-action@v0.1.4
-  #       with:
-  #         host: ${{ secrets.EC2_HOST }}
-  #         username: ${{ secrets.EC2_USER }}
-  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         source: "docker-compose.yml, nginx/nginx.conf"
-  #         target: .
-  #     - name: run docker-compose
-  #       uses: appleboy/ssh-action@v1.0.0
-  #       with:
-  #         host: ${{ secrets.EC2_HOST }}
-  #         username: ${{ secrets.EC2_USER }}
-  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         script: |
-  #           docker compose down
-  #           docker rmi -f $(docker images -q)
-  #           docker compose pull
-  #           docker compose up -d
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: [ build_and_push ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "docker-compose.yml, nginx/nginx.conf"
+          target: .
+      - name: run docker-compose
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker compose down
+            docker rmi -f $(docker images -q)
+            docker compose pull
+            docker compose up -d
