@@ -57,10 +57,10 @@ jobs:
       - name: Pull Docker image
         run: |
           ssh -i ~/.ssh/private.key ubuntu@${{ secrets.EC2_HOST }} 'sudo docker pull phuongto07092000/fastapi:latest'
-      # - name: Stop running container
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@your-ec2-instance-ip 'sudo docker stop fastapi || true'
-      #     ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@your-ec2-instance-ip 'sudo docker rm fastapi || true'
-      # - name: Run new container
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i staging.pem ubuntu@your-ec2-instance-ip 'sudo docker run -d --name fastapi -p 80:3000 phuongto07092000/fastapi:latest'
+      - name: Stop running container
+        run: |
+          ssh -i  ubuntu@${{ secrets.EC2_HOST }} 'sudo docker stop fastapi || true'
+          ssh -i  ubuntu@${{ secrets.EC2_HOST }} 'sudo docker rm fastapi || true'
+      - name: Run new container
+        run: |
+          ssh -i  ubuntu@${{ secrets.EC2_HOST }} 'sudo docker run -d --name fastapi -p 80:3000 phuongto07092000/fastapi:latest'
