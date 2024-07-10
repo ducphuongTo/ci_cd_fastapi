@@ -27,8 +27,8 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx build \
-            --file dockerfile \
-            --tag <phuongto07092000>/<fastapi>:latest \
+            --file /home/phuongtd/project/dockerfile \
+            --tag phuongto07092000/fastapi:latest \
             --push .
   # deploy:
   #   runs-on: ubuntu-latest
