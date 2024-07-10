@@ -49,6 +49,7 @@ jobs:
 
       - name: Set permissions for private key
         run: |
+          mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/private.key
           chmod 600 ~/.ssh/private.key
       - name: Pull Docker image
