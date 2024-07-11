@@ -2,7 +2,7 @@ version: "3"
 
 services:
   web:
-    image: olayinkaadebisi/fastapiwithnginx:latest
+    image: phuongto07092000/fastapi
     container_name: web
     ports:
       - "8000:8000"
