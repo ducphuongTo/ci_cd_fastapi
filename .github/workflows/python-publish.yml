@@ -57,12 +57,12 @@ jobs:
       
       - name: Copy Docker Compose and Nginx Config
         run: |
-          scp -i ~/.ssh/private.key docker-compose.yml nginx/nginx.conf ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/
+          scp -i ~/.ssh/private.key docker-compose.yml nginx/nginx.conf ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/
 
       - name: Deploy with Docker Compose
         run: |
           ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/ubuntu/
+            cd /home/${{ secrets.EC2_USER }}/
             docker-compose down
             docker-compose pull
             docker-compose up -d
