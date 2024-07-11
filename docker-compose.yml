@@ -21,7 +21,7 @@ services:
     volumes:
         - ./nginx:/etc/nginx/user_conf.d:ro
     depends_on:
-      - app
+      - web
     logging:
       driver: "json-file"
       options:
