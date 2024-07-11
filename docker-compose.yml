@@ -18,12 +18,8 @@ services:
     container_name: nginx
     ports:
       - "80:80"
-      # - "443:443"
-    #environment:
-    #  - CERTBOT_EMAIL=tophuong7900@gmail.com
     volumes:
         - ./nginx:/etc/nginx/user_conf.d:ro
-        # - letsencrypt:/etc/letsencrypt
     depends_on:
       - app
     logging:

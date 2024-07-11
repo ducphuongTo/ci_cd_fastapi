@@ -54,13 +54,16 @@ jobs:
           chmod 600 ~/.ssh/private.key
           ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Pull Docker image
+      
+      - name: Copy Docker Compose and Nginx Config
         run: |
-          ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'docker pull phuongto07092000/fastapi:latest'
-      - name: Stop running container
+          scp -i ~/.ssh/private.key docker-compose.yml nginx/nginx.conf ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/
+
+      - name: Deploy with Docker Compose
         run: |
-          ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'docker stop fastapi || true'
-          ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'docker rm fastapi || true'
-      - name: Run new container
-        run: |
-          ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'docker run -d --name fastapi -p 80:3000 phuongto07092000/fastapi:latest'
+          ssh -i ~/.ssh/private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/ubuntu/
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
+          EOF
